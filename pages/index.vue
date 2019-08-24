@@ -1,77 +1,64 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        cyoa
-      </h1>
-      <h2 class="subtitle">
-        Visual Novel Game
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <div>
+    <form v-if="!$store.state.authUser" @submit.prevent="login">
+      <p v-if="formError" class="error">
+        {{ formError }}
+      </p>
+      <p><i>To login, use <b>demo</b> as username and <b>demo</b> as password.</i></p>
+      <p>Username: <input v-model="formUsername" type="text" name="username"></p>
+      <p>Password: <input v-model="formPassword" type="password" name="password"></p>
+      <button type="submit">
+        Login
+      </button>
+    </form>
+    <div v-else>
+      Hello {{ $store.state.authUser.username }}!
+      <pre>I am the secret content, I am shown only when the user is connected.</pre>
+      <p><i>You can also refresh this page, you'll still be connected!</i></p>
+      <button @click="logout">
+        Logout
+      </button>
     </div>
+    <p>
+      <NuxtLink to="/secret">
+        Super secret page
+      </NuxtLink>
+    </p>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
 
 export default {
-  components: {
-    Logo
+  name: 'Index',
+  data () {
+    return {
+      formError: null,
+      formUsername: '',
+      formPassword: ''
+    }
+  },
+  methods: {
+    async login () {
+      try {
+        await this.$store.dispatch('login', {
+          username: this.formUsername,
+          password: this.formPassword
+        })
+        this.formUsername = ''
+        this.formPassword = ''
+        this.formError = null
+      } catch (e) {
+        this.formError = e.message
+      }
+    },
+    async logout () {
+      try {
+        await this.$store.dispatch('logout')
+      } catch (e) {
+        this.formError = e.message
+      }
+    }
   }
 }
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
