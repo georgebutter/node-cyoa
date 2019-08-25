@@ -1,3 +1,49 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css?family=Capriola&display=swap');
+
+.bg-green {
+  background-image: url('/bg-green.png');
+}
+.bg-paper {
+  background-image: url('/bg-paper.png');
+  background: #EBD7C4;
+}
+.border-bevel {
+  @apply rounded-sm;
+  background-color: #87948D;
+  border-style: solid;
+  border-width: 5px;
+  border-top-color: #69756C;
+  border-right-color: #69756C;
+  border-bottom-color: #333F3E;
+  border-left-color: #69756C;
+}
+.border-bevel > * {
+  @apply rounded;
+  border-width: 5px;
+  border-top-color: #333F3E;
+  border-right-color: #333F3E;
+  border-bottom-color: #69756C;
+  border-left-color: #333F3E;
+}
+.border-bevel-sm {
+  @apply rounded;
+  background-color: #87948D;
+  border-style: solid;
+  border-width: 3px;
+  border-top-color: #69756C;
+  border-right-color: #69756C;
+  border-bottom-color: #333F3E;
+  border-left-color: #69756C;
+}
+.border-bevel-sm > * {
+  @apply rounded-sm;
+  border-width: 3px;
+  border-top-color: #333F3E;
+  border-right-color: #333F3E;
+  border-bottom-color: #69756C;
+  border-left-color: #333F3E;
+}
